@@ -531,26 +531,26 @@ class CheckIn:
                 if data is None:
 
                     # 尝试从浏览器 localStorage 获取状态
-                    # print(f"ℹ️ {self.account_name}: Getting status from browser")
-                    # try:
-                    #     status_data = await self.get_status_with_browser()
-                    #     if status_data:
-                    #         oauth = status_data.get(f"{provider}_oauth", False)
-                    #         if not oauth:
-                    #             return {
-                    #                 "success": False,
-                    #                 "error": f"{provider} OAuth is not enabled.",
-                    #             }
+                    print(f"ℹ️ {self.account_name}: Getting status from browser")
+                    try:
+                        status_data = await self.get_status_with_browser()
+                        if status_data:
+                            oauth = status_data.get(f"{provider}_oauth", False)
+                            if not oauth:
+                                return {
+                                    "success": False,
+                                    "error": f"{provider} OAuth is not enabled.",
+                                }
 
-                    #         client_id = status_data.get(f"{provider}_client_id", "")
-                    #         if client_id:
-                    #             print(f"✅ {self.account_name}: Got client ID from localStorage: " f"{client_id}")
-                    #             return {
-                    #                 "success": True,
-                    #                 "client_id": client_id,
-                    #             }
-                    # except Exception as browser_err:
-                    #     print(f"⚠️ {self.account_name}: Failed to get status from browser: " f"{browser_err}")
+                            client_id = status_data.get(f"{provider}_client_id", "")
+                            if client_id:
+                                print(f"✅ {self.account_name}: Got client ID from localStorage: " f"{client_id}")
+                                return {
+                                    "success": True,
+                                    "client_id": client_id,
+                                }
+                    except Exception as browser_err:
+                        print(f"⚠️ {self.account_name}: Failed to get status from browser: " f"{browser_err}")
 
                     return {
                         "success": False,
@@ -675,21 +675,21 @@ class CheckIn:
                 json_data = self._check_and_handle_response(response, "get_auth_state")
                 if json_data is None:
                     # 尝试从浏览器 localStorage 获取状态
-                    # print(f"ℹ️ {self.account_name}: Getting auth state from browser")
-                    # try:
-                    #     auth_result = await self.get_auth_state_with_browser()
+                    print(f"ℹ️ {self.account_name}: Getting auth state from browser")
+                    try:
+                        auth_result = await self.get_auth_state_with_browser()
 
-                    #     if not auth_result.get("success"):
-                    #         error_msg = auth_result.get("error", "Unknown error")
-                    #         print(f"❌ {self.account_name}: {error_msg}")
-                    #         return {
-                    #             "success": False,
-                    #             "error": "Failed to get auth state with browser",
-                    #         }
+                        if not auth_result.get("success"):
+                            error_msg = auth_result.get("error", "Unknown error")
+                            print(f"❌ {self.account_name}: {error_msg}")
+                            return {
+                                "success": False,
+                                "error": "Failed to get auth state with browser",
+                            }
 
-                    #     return auth_result
-                    # except Exception as browser_err:
-                    #     print(f"⚠️ {self.account_name}: Failed to get auth state from browser: " f"{browser_err}")
+                        return auth_result
+                    except Exception as browser_err:
+                        print(f"⚠️ {self.account_name}: Failed to get auth state from browser: " f"{browser_err}")
 
                     return {
                         "success": False,
@@ -834,19 +834,19 @@ class CheckIn:
                 json_data = self._check_and_handle_response(response, "get_user_info")
                 if json_data is None:
                     # 尝试从浏览器获取用户信息
-                    # print(f"ℹ️ {self.account_name}: Getting user info from browser")
-                    # try:
-                    #     user_info_result = await self.get_user_info_with_browser()
-                    #     if user_info_result.get("success"):
-                    #         return user_info_result
-                    #     else:
-                    #         error_msg = user_info_result.get("error", "Unknown error")
-                    #         print(f"⚠️ {self.account_name}: {error_msg}")
-                    # except Exception as browser_err:
-                    #     print(
-                    #         f"⚠️ {self.account_name}: "
-                    #         f"Failed to get user info from browser: {browser_err}"
-                    #     )
+                    print(f"ℹ️ {self.account_name}: Getting user info from browser")
+                    try:
+                        user_info_result = await self.get_user_info_with_browser(client.cookies.jar)
+                        if user_info_result.get("success"):
+                            return user_info_result
+                        else:
+                            error_msg = user_info_result.get("error", "Unknown error")
+                            print(f"⚠️ {self.account_name}: {error_msg}")
+                    except Exception as browser_err:
+                        print(
+                            f"⚠️ {self.account_name}: "
+                            f"Failed to get user info from browser: {browser_err}"
+                        )
 
                     return {
                         "success": False,
